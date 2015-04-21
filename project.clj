@@ -1,4 +1,4 @@
-(defproject lein-memcached "0.1.0-SNAPSHOT"
+(defproject lein-memcached "0.1.1-SNAPSHOT"
   :description "Creates an in-memory memcached server based on jmemcached"
   :url "https://github.com/mdaley/lein-memcached"
   :license {:name "Eclipse Public License"
