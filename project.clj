@@ -6,6 +6,11 @@
   :dependencies [[com.thimbleware.jmemcached/jmemcached-core "1.0.0"
                   :exclusions [org.slf4j/slf4j-api]]
                  [ch.qos.logback/logback-classic "1.1.2"]]
+  :profiles {:dev {:dependencies [[cheshire "5.5.0"]
+                                  [junit "4.11"]
+                                  [midje "1.6.3"]
+                                  [com.amazonaws/elasticache-java-cluster-client "1.0.61.0"]]
+                   :plugins [[lein-midje "3.1.3"]]}}
   :scm {:name "git"
         :url "https://github.com/mdaley/lein-memcached"}
   :eval-in-leiningen true
