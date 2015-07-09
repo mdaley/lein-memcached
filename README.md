@@ -2,6 +2,8 @@
 
 A Leiningen plugin to run an in-memory instance of memcached using Thimbleware's jmemcache-daemon. Useful for testing purposes.
 
+Does not behave correctly for expiry, only to be used to test get, add, delete and set. For binary mode the client will need to be set to ClientMode/Static to work.
+
 ## Usage
 
 Add `[lein-memcached "0.1.0"]` to the `:plugins` vector of your project.

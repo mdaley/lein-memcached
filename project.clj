@@ -17,9 +17,9 @@
   :repositories [["releases" {:url "https://clojars.org/repo"
                               :creds :gpg}]]
 
-  :memcached {:host "localhost"
+  :memcached {:host "127.0.0.1"
               :port 11211
               :max-items 100
               :max-bytes 100000
               :verbose true
-              :binary false})
+              :binary true})

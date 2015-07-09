@@ -15,18 +15,17 @@
 
 (defn create-client
   []
-  (MemcachedClient. (list (InetSocketAddress. "localhost" 11211))))
+  (MemcachedClient. (list (InetSocketAddress. "127.0.0.1" 11211))))
 
 (defn create-binary-client
   []
-  (MemcachedClient. (BinaryConnectionFactory. ClientMode/Static) (list (InetSocketAddress. "localhost" 11211))))
+  (MemcachedClient. (BinaryConnectionFactory. ClientMode/Static) (list (InetSocketAddress. "127.0.0.1" 11211))))
 
 (defn store-value
   [client key value]
   (-> client
       (.set key 12000 value (SerializingTranscoder.))
       (.get 10000 TimeUnit/MILLISECONDS)))
-
 
 (defn store-value-binary
   [client key value]
@@ -53,6 +52,12 @@
       (.get 10000 TimeUnit/MILLISECONDS)
       .getValue))
 
+(defn delete-value
+  [client key]
+  (-> client
+      (.delete key)
+      (.get 10000 TimeUnit/MILLISECONDS)))
+
 (fact-group
  :unit
  :ascii
@@ -69,11 +74,17 @@
   (fact "Can retreive a stored value"
         (let [client (create-client)]
           (store-value client "key123" "my value")
-          (get-value client "key123")  => "my value"))))
+          (get-value client "key123")  => "my value"))
+
+  (fact "Can delete a stored value"
+        (let [client (create-client)]
+          (store-value client "key123" "my value")
+          (delete-value client "key123")  => true
+          (get-value client "key123")  => nil))))
 
 (fact-group
  :unit
- :ascii
+ :binary
 
  (with-state-changes
    [(before :facts (do (start-memcached {:memcached {:binary true}})))
@@ -92,4 +103,10 @@
   (fact "Can retreive and touch a stored value"
         (let [client (create-binary-client)]
           (store-value-binary client "key123" "my value")
-          (get-value-and-touch client "key123")  => "my value"))))
+          (get-value-and-touch client "key123")  => "my value"))
+
+  (fact "Can delete a stored value"
+        (let [client (create-binary-client)]
+          (store-value-binary client "key123" "my value")
+          (delete-value client "key123")  => true
+          (get-value-binary client "key123") => nil))))
